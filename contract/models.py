@@ -1,33 +1,45 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class Contract(models.Model):
-    number_contract = models.IntegerField(
-        unique=True,
-        verbose_name='Numero do Contrato',
-    )
-    name_contract = models.CharField(
+    number_contract = models.CharField(
         max_length=50,
-        blank=True,
-        null=True,
-        verbose_name='Nome do Contrato'
+        unique=True,
+        verbose_name='Nome do contrato',
+    )
+    contract_name = models.CharField(
+        max_length=50,
+        verbose_name='Nome do contrato'
     )
     start_date = models.DateField(
         verbose_name='Data de Inicio'
 
     )
-
     end_date = models.DateField(
         verbose_name='Data de Termino'
     )
-    created_at = models.DateField(
+
+    is_active = models.BooleanField(
+         default=True,
+    )
+
+    created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Criado em'
     )
+
     updated_at = models.DateTimeField(
         auto_now=True,
         verbose_name='Atualizado em'
     )
+
+    def clean(self):
+         if self.start_date > self.end_date:
+              raise ValidationError('A data de inicio não pode ser após a data de término')
+         
+    def __str__(self):
+         return self.contract_name
 
 
 
@@ -35,10 +47,11 @@ class Proposal(models.Model):
       contract = models.ForeignKey(
            Contract, 
            on_delete=models.PROTECT,
-           related_name='name_contract',
-           verbose_name='Nome do contrato'
+           related_name='contratcs',
+           verbose_name='Numero do contrato'
       )
-      number_proposal = models.IntegerField(
+      number_proposal = models.CharField(
+           max_length=30,
            unique=True,
            verbose_name='Numero da proposta'
       )
@@ -46,9 +59,7 @@ class Proposal(models.Model):
       description = models.TextField(
            verbose_name='Descrição'
       )
-      is_active = models.BooleanField(
-           verbose_name='Ativo'
-      )
+    
       created_at = models.DateTimeField(
            auto_now_add=True,
            verbose_name='Criado em'
