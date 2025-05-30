@@ -6,7 +6,7 @@ class Contract(models.Model):
     number_contract = models.CharField(
         max_length=50,
         unique=True,
-        verbose_name='Nome do contrato',
+        verbose_name='Número do contrato',
     )
     contract_name = models.CharField(
         max_length=50,
@@ -22,6 +22,7 @@ class Contract(models.Model):
 
     is_active = models.BooleanField(
          default=True,
+         verbose_name='Ativo'
     )
 
     created_at = models.DateTimeField(
@@ -68,3 +69,6 @@ class Proposal(models.Model):
            auto_now=True,
            verbose_name='Atualizaddo em'
       )
+
+      def __str__(self):
+           return self.number_proposal
