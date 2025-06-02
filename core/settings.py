@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'user',
     'contract',
     'invoice',
+    'movimentation',
+    'stock',
 ]
 
 MIDDLEWARE = [

@@ -112,5 +112,9 @@ class Invoice_item(models.Model):
     )
 
 
+    def __str__(self):
+        return self.invoice_number
+
+
     
 
