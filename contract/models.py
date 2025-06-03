@@ -35,6 +35,10 @@ class Contract(models.Model):
         verbose_name='Atualizado em'
     )
 
+
+    class Meta:
+         verbose_name_plural = 'Contratos'
+
     def clean(self):
          if self.start_date > self.end_date:
               raise ValidationError('A data de inicio não pode ser após a data de término')
@@ -69,6 +73,8 @@ class Proposal(models.Model):
            auto_now=True,
            verbose_name='Atualizaddo em'
       )
+      class Meta:
+         verbose_name_plural = 'Propostas'
 
       def __str__(self):
            return self.number_proposal

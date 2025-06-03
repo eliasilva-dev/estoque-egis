@@ -26,3 +26,10 @@ class User(models.Model):
         verbose_name='Ataualizado em'
 
     )
+
+    class Meta:
+        verbose_name = 'Usuário'
+        verbose_name_plural ='Usuários'
+
+    def __str__(self):
+        return str(self.email)

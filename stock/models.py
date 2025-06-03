@@ -9,6 +9,8 @@ class Item_category(models.Model):
         unique=True,
         verbose_name='Categoria',
     )
+    class Meta:
+        verbose_name_plural = 'Categorias'
 
     def __str__(self):
         return self.category_name
@@ -20,6 +22,8 @@ class Equipament_type(models.Model):
         unique=True,
         verbose_name='Tipo do equipamento'
     )
+    class Meta:
+        verbose_name_plural = 'Tipos de equipamento'
 
     def __str__(self):
         return self.equipament_type
@@ -31,6 +35,10 @@ class Status_item(models.Model):
         unique=True,
         verbose_name='Status'
     )
+
+    class Meta:
+        verbose_name_plural = 'Tipos de status'
+
     
 
     def __str__(self):
@@ -40,6 +48,11 @@ class Status_item(models.Model):
 
 class Locals(models.Model):
     local_name = models.CharField(max_length=20, unique=True)
+
+
+    class Meta:
+        verbose_name= 'Localidade'
+        verbose_name_plural = 'Localidades'
     
     def __str__(self):
         return self.local_name
@@ -79,7 +92,7 @@ class Stock(models.Model):
         verbose_name='Localidade'
     )
 
-    serail_number = models.CharField(
+    serial_number = models.CharField(
         max_length=40,
         unique=True,
         verbose_name='Número de série'
@@ -124,9 +137,13 @@ class Stock(models.Model):
         verbose_name='Atualizaddo em'
     )
 
+    class Meta:
+        verbose_name ='Estoque'
+        verbose_name_plural = 'Estoque'
+
 
     def __str__(self):
-        return self.serail_number
+        return str(self.serial_number)
 
 
 

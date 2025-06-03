@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from invoice.models import Invoice, Invoice_item, Invoice_item_status, Invoice_type, Item_catalog
 from movimentation.models import Movimentation_type, Movimentations
-from stock.models import Item_category, Status_item, Equipament_type, Locals, Stock
+
 
 
 @admin.register(Invoice_type)
@@ -45,26 +45,4 @@ class Movimentations(admin.ModelAdmin):
     search_fields = ['stock__serial_number']
     list_filter =  ['date']
 
-
-@admin.register(Item_category)
-class Item_category(admin.ModelAdmin):
-    list_display = ['category_name']
-
-
-@admin.register(Status_item)
-class Status_item(admin.ModelAdmin):
-    list_display = ['status_name']
-
-
-@admin.register(Equipament_type)
-class Equipament_type(admin.ModelAdmin):
-    list_display = ['equipament_type']
-
-@admin.register(Locals)
-class Locals(admin.ModelAdmin):
-    list_display = ['local_name']
-
-@admin.register(Stock)
-class Stock(admin.ModelAdmin):
-    list_display = ['invoice_number', 'category', 'status', 'item_type', 'local', 'serail_number', 'property_number', 'request_unit', 'pay_unit', 'warranty']
 

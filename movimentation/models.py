@@ -5,8 +5,14 @@ from user.models import User
 class Movimentation_type(models.Model):
     movimentation_name = models.CharField(max_length=15, unique=True)
 
+
+
+    class Meta: 
+        verbose_name='Movimentação'
+        verbose_name_plural = 'Tipos de movimentação'
+
     def __str__(self):
-        return self.movimentation_name
+        return str(self.movimentation_name)
 
 
 class Movimentations(models.Model):
@@ -17,6 +23,8 @@ class Movimentations(models.Model):
         verbose_name='Número de série',
 
     )
+
+
 
     movimentation = models.ForeignKey(
         Movimentation_type,
@@ -48,4 +56,8 @@ class Movimentations(models.Model):
            auto_now=True,
            verbose_name='Atualizaddo em'
     )
+
+    class Meta:
+        verbose_name = 'Movimentação'
+        verbose_name_plural = 'Movimentações'
 

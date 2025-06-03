@@ -8,6 +8,10 @@ class Invoice_type(models.Model):
         max_length=20,
         verbose_name='Tipo da nota',
     )
+    
+    class Meta: 
+        verbose_name_plural = 'Tipo da nota'
+
     def __str__(self):
         return str(self.name_type)
 
@@ -16,6 +20,10 @@ class Invoice_item_status(models.Model):
         unique=True,
         verbose_name='Status'
     )
+
+    class Meta: 
+        verbose_name_plural = 'Status dos Itens'
+
     def __str__(self):
         return str(self.name_status)
 
@@ -32,8 +40,12 @@ class Item_catalog(models.Model):
         blank=True,
         null=True,
     )
+
+    class Meta: 
+        verbose_name_plural = 'Catalogo de Itens'
+    
     def __str__(self):
-        return self.name_item
+        return str(self.name_item)
 
 class Invoice(models.Model):
     proposal = models.ForeignKey(
@@ -69,8 +81,14 @@ class Invoice(models.Model):
         auto_now=True,
         verbose_name='Atualizaddo em'
     )
+
+
+    class Meta: 
+        verbose_name_plural = 'Notas Fiscais'
+    
+
     def __str__(self):
-        return self.invoice_number
+        return str(self.invoice_number)
 
 
 class Invoice_item(models.Model):
@@ -111,9 +129,12 @@ class Invoice_item(models.Model):
         verbose_name='Atualizaddo em'
     )
 
+    class Meta: 
+        verbose_name_plural = 'Itens da nota'
+
 
     def __str__(self):
-        return self.invoice_number
+        return str(self.invoice_number)
 
 
     
