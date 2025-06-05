@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from invoice.models import Invoice, Invoice_item, Invoice_item_status, Invoice_type, Item_catalog
-from movimentation.models import Movimentation_type, Movimentations
+from invoice.models import Invoice, Invoice_item, Invoice_type, Item_catalog
+
 
 
 
@@ -16,33 +16,22 @@ class Item_catalog(admin.ModelAdmin):
     list_display = ['name_item']
     
 
-@admin.register(Invoice_item_status)
-class Invoice_item_status(admin.ModelAdmin):
-    list_display = ['name_status']
+
 
 @admin.register(Invoice)
 class Invoice(admin.ModelAdmin):
     list_display =  ['proposal', 'invoice_type', 'invoice_number', 'description', 'price']
-    search_fields = ['invoice_number', 'proposal__number_proposal']
+    search_fields = ['invoice_number','proposal__number_proposal']
     list_filter = ['price', 'invoice_type']
+
+
 
 @admin.register(Invoice_item)
 class Invoice_item(admin.ModelAdmin):
-    list_display = ['invoice_number', 'name_item', 'status_item', 'unit_cost', 'quantity']
-    search_fields = ['name_item', 'invoice_number']
-    list_filter = ['status_item']
+    list_display = ['invoice_number', 'name_item', 'unit_cost', 'quantity', 'is_registred']
+    search_fields = ['invoice_number__invoice_number', 'name_item__name_item']
+    list_filter = ['is_registred']
 
 
-
-@admin.register(Movimentation_type)
-class Movimentation_type(admin.ModelAdmin):
-    list_display = ['movimentation_name']
-
-
-@admin.register(Movimentations)
-class Movimentations(admin.ModelAdmin):
-    list_display = ['item', 'movimentation', 'date', 'observation', 'user']
-    search_fields = ['stock__serial_number']
-    list_filter =  ['date']
 
 

@@ -2,6 +2,8 @@ from django.db import models
 from stock.models import Stock
 from user.models import User
 # Create your models here.
+
+
 class Movimentation_type(models.Model):
     movimentation_name = models.CharField(max_length=15, unique=True)
 
@@ -43,6 +45,8 @@ class Movimentations(models.Model):
 
     user = models.ForeignKey(
         User,
+        blank=True,
+        null=True,
         on_delete=models.PROTECT,
         verbose_name='Usuário',
 

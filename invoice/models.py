@@ -15,18 +15,7 @@ class Invoice_type(models.Model):
     def __str__(self):
         return str(self.name_type)
 
-class Invoice_item_status(models.Model):
-    name_status = models.CharField(
-        unique=True,
-        verbose_name='Status'
-    )
-
-    class Meta: 
-        verbose_name_plural = 'Status dos Itens'
-
-    def __str__(self):
-        return str(self.name_status)
-
+   
 
 
 class Item_catalog(models.Model):
@@ -46,6 +35,8 @@ class Item_catalog(models.Model):
     
     def __str__(self):
         return str(self.name_item)
+
+
 
 class Invoice(models.Model):
     proposal = models.ForeignKey(
@@ -88,7 +79,8 @@ class Invoice(models.Model):
     
 
     def __str__(self):
-        return str(self.invoice_number)
+        return self.invoice_number
+
 
 
 class Invoice_item(models.Model):
@@ -102,16 +94,15 @@ class Invoice_item(models.Model):
     name_item = models.ForeignKey(
         Item_catalog,
         on_delete=models.PROTECT,
-        related_name='items',
+        related_name='itens',
         verbose_name='Nome do item',
     )
-    status_item = models.ForeignKey(
-        Invoice_item_status,
-        on_delete=models.PROTECT,
-        related_name='status',
-        verbose_name='Status do item',
 
+    is_registred = models.BooleanField(
+        default=False,
+        verbose_name='Cadastrado',
     )
+
     unit_cost = models.DecimalField(
         max_digits=10,
         decimal_places=2,

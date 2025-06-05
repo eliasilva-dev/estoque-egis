@@ -53,7 +53,7 @@ class Proposal(models.Model):
            Contract, 
            on_delete=models.PROTECT,
            related_name='contratcs',
-           verbose_name='Numero do contrato'
+           verbose_name='Nome do contrato'
       )
       number_proposal = models.CharField(
            max_length=30,

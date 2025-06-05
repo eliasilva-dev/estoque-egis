@@ -1,6 +1,10 @@
 from django.contrib import admin
 from stock.models import Item_category, Status_item, Equipament_type, Locals, Stock
 # Register your models here.
+
+
+
+
 @admin.register(Stock)
 class Stock(admin.ModelAdmin):
     list_display = ['serial_number', 'category','property_number', 'request_unit', 'pay_unit','local', 'status', 'item_type','invoice_number','warranty']
