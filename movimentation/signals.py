@@ -4,6 +4,13 @@ from movimentation.models import Movimentation_type, Movimentations
 from stock.models import Stock
 
 
+VALID_MOVIMENTATIONS = {
+   'Ativo': 'Saida',
+   'Em estoque': 'Entrada',
+   'Tranferido': 'Saida',
+   'Em manutenção': 'Saida'
+}
+
 
 @receiver(post_save, sender=Stock)
 def create_movimentation(sender, instance, created, **kwargs):
@@ -13,6 +20,7 @@ def create_movimentation(sender, instance, created, **kwargs):
         Movimentations.objects.create(
            item = instance,
            movimentation = moviment_type,
+           local = instance.local.local_name,
            user= None,
            observation='Teste preenchimento'
         )

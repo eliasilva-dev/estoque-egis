@@ -37,6 +37,11 @@ class Movimentations(models.Model):
     )
 
     date = models.DateField(verbose_name='Data', auto_now_add=True)
+
+    local = models.CharField(
+        max_length=20,
+        verbose_name='Localidade'
+    )
     observation = models.TextField(
         null=True,
         blank=True,
