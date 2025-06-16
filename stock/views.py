@@ -14,3 +14,4 @@ class StockViewSet(viewsets.ModelViewSet):
 class ItemCategoryViewSet(viewsets.ModelViewSet):
     queryset = Item_category.objects.all()
     serializer_class = ItemCategorySerializer
+    
