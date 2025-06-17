@@ -15,12 +15,12 @@ class InvoiceViewSet(viewsets.ModelViewSet):
     serializer_class = InvoiceSerializer
 
 
-class Invoice_ItemViewSet(viewsets.ModelViewSet):
+class InvoiceItemViewSet(viewsets.ModelViewSet):
     queryset = Invoice_item.objects.all()
     serializer_class = InvoiceItemSerializer
 
 
-class Invoice_typeViewSet(viewsets.ModelViewSet):
+class InvoicetypeViewSet(viewsets.ModelViewSet):
     queryset = Invoice_type.objects.all()
     serializer_class = InvoiceTypeSerializer
 

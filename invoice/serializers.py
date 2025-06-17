@@ -23,4 +23,4 @@ class InvoiceTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Invoice_type
-        fieldes = '__all__'
+        fields = '__all__'
