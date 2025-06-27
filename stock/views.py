@@ -7,7 +7,13 @@ from stock.serializers import StockSerializer, ItemCategorySerializer
 
 
 class StockViewSet(viewsets.ModelViewSet):
-    queryset = Stock.objects.all()
+    queryset = Stock.objects.select_related(
+        'invoice_number__name_item',
+        'category',
+        'status',
+        'item_type',
+        'local'
+    )
     serializer_class = StockSerializer   
 
 
