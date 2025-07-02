@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from stock.models import Stock, Item_category
+from stock.models import Stock, Item_category, Status_item, Locals
+from movimentation.models import Movimentations, Movimentation_type
 from invoice.serializers import ItemCatalogSerializer
 
 
@@ -11,8 +12,29 @@ class StockSerializer(serializers.ModelSerializer):
     item_image = serializers.URLField(source='invoice_number.name_item.img_url', read_only=True)
     category = serializers.StringRelatedField()
     item_type = serializers.StringRelatedField()
-    status = serializers.StringRelatedField()
-    local = serializers.StringRelatedField()
+    status = serializers.PrimaryKeyRelatedField(queryset=Status_item)
+    local = serializers.PrimaryKeyRelatedField(queryset=Locals)
+
+
+    def create(self, validated_data):
+        
+        stock = Stock.objects.create(**validated_data)
+        print("Criei o obj")
+        if validated_data['status'].status_name == "Em estoque":
+            movimentation_type = Movimentation_type.objects.get(movimentation_name='Entrada')
+            print("User: ",self.context['request'].user)
+            mov = Movimentations.objects.create(
+                item = stock,
+                movimentation = movimentation_type,
+                local = stock.local.local_name,
+                observation = 'Cadastro',
+                user = self.context['request'].user
+            )
+            mov.save()
+
+        
+        return stock
+
     
     class Meta:
         model = Stock

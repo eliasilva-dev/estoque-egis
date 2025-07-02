@@ -11,7 +11,7 @@ VALID_MOVIMENTATIONS = {
    'Em manutenção': 'Saida'
 }
 
-
+'''
 @receiver(post_save, sender=Stock)
 def create_movimentation(sender, instance, created, **kwargs):
    if created:
@@ -26,4 +26,4 @@ def create_movimentation(sender, instance, created, **kwargs):
         )
 
 
-    
+'''  
