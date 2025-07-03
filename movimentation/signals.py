@@ -4,12 +4,7 @@ from movimentation.models import Movimentation_type, Movimentations
 from stock.models import Stock
 
 
-VALID_MOVIMENTATIONS = {
-   'Ativo': 'Saida',
-   'Em estoque': 'Entrada',
-   'Tranferido': 'Saida',
-   'Em manutenção': 'Saida'
-}
+
 
 '''
 @receiver(post_save, sender=Stock)

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
-class User(models.Model):
+class UserProfile(models.Model):
     user = models.OneToOneField(
         User, 
         on_delete=models.PROTECT,
@@ -12,10 +12,17 @@ class User(models.Model):
         null=True,
         verbose_name='Usuário',
     )
-    email = models.CharField(
-        max_length=100,
-        verbose_name='E-mail',
-        unique=True
+    phone_number = models.CharField(
+        blank=True,
+        null=True,
+        max_length=15
+    )
+
+    department = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True
+
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -32,4 +39,4 @@ class User(models.Model):
         verbose_name_plural ='Usuários'
 
     def __str__(self):
-        return str(self.email)
+        return str(self.user.username)

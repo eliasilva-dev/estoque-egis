@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path('api/v1/', include('authentification.urls')),
     path('api/v1/', include('stock.urls')),
     path('api/v1/', include('invoice.urls')),
     path('api/v1/', include('contract.urls')),
