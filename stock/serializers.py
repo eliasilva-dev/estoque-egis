@@ -13,7 +13,7 @@ class StockSerializer(serializers.ModelSerializer):
     #category = serializers.StringRelatedField()
     #item_type = serializers.StringRelatedField()
     #status = serializers.PrimaryKeyRelatedField(queryset=Status_item)
-    #local = serializers.PrimaryKeyRelatedField(queryset=Locals)
+    #local = serializers.PrimaryKeyRelatedField(queryset=Locals.objects.all())
 
 
 
@@ -36,11 +36,53 @@ class StockSerializer(serializers.ModelSerializer):
             print("Erro ao criar movimentação", e)
 
         return stock
+    
+    def update(self, instance, validated_data):
+        #acess to current status of item 
+        old_status = instance.status
+        
+        #Verify on the request body if status is present
+        print('Current State:', old_status)
+        if 'status' in validated_data:
+            print('Into first if status')
+            #get the new status recived by request body 
+            new_status = validated_data.get('status')
+            print('New Status:', new_status)
+            #verify if the status was changed
+            if new_status != old_status:
+                print(f'Into if where {new_status} != {old_status}')
+                if new_status.status_name == "Em estoque":
+                    #if the new_status is 'Em estoque' the item has returned to stock, so the movimentation should be 'Entrada'
+                    movimentation_type = Movimentation_type.objects.get(movimentation_name='Entrada')
+                    mov = Movimentations.objects.create(
+                        item = instance,
+                        movimentation = movimentation_type,
+                        local = instance.local.local_name,
+                        user = self.context['request'].user
+
+                    )
+                    print('movimentation Entrada registred')
+                #if not, the item could be (Ativo(em uso), (Removido), (Manuntencao) (tranferencia) ) in this cases the movimentation should be 'Saida' beacause the itens is not avalaible on stock 
+                else:
+                    print('Registering other cases')
+                    movimentation_type = Movimentation_type.objects.get(movimentation_name='Saida')
+                    mov = Movimentations.objects.create(
+                        item = instance,
+                        movimentation=movimentation_type,
+                        local = instance.local.local_name,
+                        user = self.context['request'].user
+                    )
+                mov.save()
+        return super().update(instance, validated_data)
+
+
+
 
     
     class Meta:
         model = Stock
         fields = [
+            'id',
             'invoice_number',
             'serial_number',
             'property_number',
@@ -68,4 +110,11 @@ class StatusItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Status_item
+        fields = '__all__'
+
+
+class LocalSerializer(serializers.ModelSerializer):
+
+    class Meta: 
+        model = Locals
         fields = '__all__'

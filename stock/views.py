@@ -2,8 +2,8 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework import viewsets
-from stock.models import Stock, Item_category, Status_item
-from stock.serializers import StockSerializer, ItemCategorySerializer, StatusItemSerializer
+from stock.models import Stock, Item_category, Status_item, Locals
+from stock.serializers import StockSerializer, ItemCategorySerializer, StatusItemSerializer, LocalSerializer
 
 
 class StockViewSet(viewsets.ModelViewSet):
@@ -25,3 +25,8 @@ class ItemCategoryViewSet(viewsets.ModelViewSet):
 class StatusItemViewSet(viewsets.ModelViewSet):
     queryset = Status_item.objects.all()
     serializer_class = StatusItemSerializer
+
+
+class LocalViewSet(viewsets.ModelViewSet):
+    queryset = Locals.objects.all()
+    serializer_class = LocalSerializer
