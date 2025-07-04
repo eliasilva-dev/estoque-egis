@@ -44,7 +44,7 @@ class StockSerializer(serializers.ModelSerializer):
         #Verify on the request body if status is present
         print('Current State:', old_status)
         if 'status' in validated_data:
-            print('Into first if status')
+            print('Into first if status is in validated_data')
             #get the new status recived by request body 
             new_status = validated_data.get('status')
             print('New Status:', new_status)
