@@ -19,9 +19,10 @@ class StockSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data): 
         stock = Stock.objects.create(**validated_data)
-        print("Criei o obj")
+        print("Obejto Criado")
         try:
             if validated_data['status'].status_name == "Em estoque":
+                print("Dentro do do if")
                 movimentation_type = Movimentation_type.objects.get(movimentation_name='Entrada')
                 print("User: ",self.context['request'].user)
                 mov = Movimentations.objects.create(
@@ -31,6 +32,7 @@ class StockSerializer(serializers.ModelSerializer):
                     observation = 'Cadastro',
                     user = self.context['request'].user
                 )
+                print(f"Criado a movimentacao {movimentation_type}")
                 mov.save()
         except Exception as e:
             print("Erro ao criar movimentação", e)
