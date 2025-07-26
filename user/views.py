@@ -29,7 +29,7 @@ class CreateUserView(generics.CreateAPIView):
 class LoginView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
-        print(request.data)
+        #print(request.data)
         username = request.data.get("username")
         password = request.data.get("password")
         user = authenticate(username=username, password=password)
@@ -60,7 +60,7 @@ class LoginView(APIView):
             )
             print("Response: ",response)
             return response
-        return Response({"error:" "Credenciais inválidas"}, status=401)
+        return Response({"error:" "Credenciais inválidas"})
             
 
 class LogoutView(APIView):
@@ -99,6 +99,7 @@ class RefreshTokenView(APIView):
                 key="access_token",
                 value=access_token,
                 httponly=True,
+                max_age=60,
                 secure=False,
                 samesite="Lax",
                 path="/",
