@@ -39,6 +39,7 @@ class LoginView(APIView):
             refresh = RefreshToken.for_user(user)
             refresh_token = str(refresh)
             response = Response({"message": "Login Realizado"}, status=200)
+            #to do: change the configuration of duration of access_token  
             response.set_cookie(
                 key="access_token",
                 value=str(refresh.access_token),
@@ -58,7 +59,6 @@ class LoginView(APIView):
                 path="/"
 
             )
-            print("Response: ",response)
             return response
         return Response({"error:" "Credenciais inválidas"})
             
