@@ -1,11 +1,12 @@
 
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from stock.views import StockViewSet, ItemCategoryViewSet, StatusItemViewSet
+from stock.views import StockViewSet, ItemCategoryViewSet, StatusItemViewSet, LocalViewSet
 
 router = DefaultRouter()
 
 router.register('stock', StockViewSet)
+router.register('locals', LocalViewSet)
 router.register('categories', ItemCategoryViewSet)
 router.register('status', StatusItemViewSet)
 

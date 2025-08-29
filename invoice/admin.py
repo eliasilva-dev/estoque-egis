@@ -20,7 +20,7 @@ class Item_catalog(admin.ModelAdmin):
 
 @admin.register(Invoice)
 class Invoice(admin.ModelAdmin):
-    list_display =  ['proposal', 'invoice_type', 'invoice_number', 'description', 'price']
+    list_display =  ['proposal', 'invoice_type', 'invoice_number', 'description', 'price', 'is_complete']
     search_fields = ['invoice_number','proposal__number_proposal']
     list_filter = ['price', 'invoice_type']
 

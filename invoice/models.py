@@ -42,7 +42,7 @@ class Invoice(models.Model):
     proposal = models.ForeignKey(
         Proposal,
         on_delete=models.PROTECT,
-        related_name='proposals',
+        related_name='invoices',
         verbose_name='Numero da Proposta'
     )
     invoice_type = models.ForeignKey(
@@ -64,6 +64,10 @@ class Invoice(models.Model):
         decimal_places=2,
         verbose_name='Valor'
     )
+
+    is_complete = models.BooleanField(default=False, verbose_name="Cadastro completo")
+
+
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Criado em'
@@ -125,7 +129,7 @@ class Invoice_item(models.Model):
 
 
     def __str__(self):
-        return str(self.invoice_number)
+        return str(self.name_item)
 
 
     

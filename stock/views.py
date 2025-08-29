@@ -3,12 +3,14 @@ from django.shortcuts import render
 # Create your views here.
 from rest_framework import viewsets
 from stock.models import Stock, Item_category, Status_item, Locals
+
 from stock.serializers import StockSerializer, ItemCategorySerializer, StatusItemSerializer, LocalSerializer
 
 
 class StockViewSet(viewsets.ModelViewSet):
+    
     queryset = Stock.objects.select_related(
-        'invoice_number__name_item',
+        'item',
         'category',
         'status',
         'item_type',

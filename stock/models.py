@@ -59,11 +59,11 @@ class Locals(models.Model):
 
 
 class Stock(models.Model):
-    invoice_number = models.ForeignKey(
+    item = models.ForeignKey(
         Invoice_item,
         on_delete=models.PROTECT,
         related_name='item_nota',
-        verbose_name='Nota fiscal',
+        verbose_name='Item da nota',
     )
     category = models.ForeignKey(
         Item_category,

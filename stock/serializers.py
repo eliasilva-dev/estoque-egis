@@ -8,8 +8,8 @@ from invoice.serializers import ItemCatalogSerializer
 class StockSerializer(serializers.ModelSerializer):
     
     #invoice_number = serializers.StringRelatedField(read_only=True)
-    item_name = serializers.CharField(source='invoice_number.name_item.name_item', read_only=True)
-    item_image = serializers.URLField(source='invoice_number.name_item.img_url', read_only=True)
+    item_name = serializers.CharField(source='item.name_item.name_item', read_only=True)
+    item_image = serializers.URLField(source='item.name_item.img_url', read_only=True)
     #category = serializers.StringRelatedField()
     #item_type = serializers.StringRelatedField()
     #status = serializers.PrimaryKeyRelatedField(queryset=Status_item)
@@ -85,10 +85,9 @@ class StockSerializer(serializers.ModelSerializer):
         model = Stock
         fields = [
             'id',
-            'invoice_number',
+            'item_name',
             'serial_number',
             'property_number',
-            'item_name',
             'item_image',
             'category',
             'status',
