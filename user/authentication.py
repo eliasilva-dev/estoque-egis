@@ -9,9 +9,7 @@ class CookieJWTAuthentication(JWTAuthentication):
         if token is None:
             return None
         try:
-            
             validated_token = self.get_validated_token(token)
-
             #print("Token valido: ", validated_token)
             user = self.get_user(validated_token)
             return user, validated_token

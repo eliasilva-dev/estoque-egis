@@ -67,13 +67,17 @@ class LogoutView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
         response = Response({"message": "Logout efetuado"}, status=200)
+        print("Entrei no post")
+        print("Antes do delete: ")
+        print(response.cookies)
         response.delete_cookie("access_token")
+        response.delete_cookie("refresh_token")
+       
         return response
 
 
 class isAuthView(APIView):
     permission_classes = [IsAuthenticated]
-
     def get(self, request):
         return Response({"authenticated": True})
 

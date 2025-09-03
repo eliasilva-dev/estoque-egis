@@ -1,20 +1,52 @@
 from rest_framework import serializers
-from stock.models import Stock, Item_category, Status_item, Locals
+from stock.models import Stock, Item_category, Status_item, Locals, Equipament_type
 from movimentation.models import Movimentations, Movimentation_type
 from invoice.serializers import ItemCatalogSerializer
+
+class EquipamamentTypeSerializer(serializers.ModelSerializer):
+
+    class Meta: 
+        model = Equipament_type
+        fields = '__all__'
+
+
+
+
+
+class ItemCategorySerializer(serializers.ModelSerializer):
+    
+    
+    class Meta:
+        model = Item_category
+        fields = '__all__'
+
+
+class StatusItemSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Status_item
+        fields = '__all__'
+
+
+class LocalSerializer(serializers.ModelSerializer):
+
+    class Meta: 
+        model = Locals
+        fields = '__all__'
+
+
 
 
 
 class StockSerializer(serializers.ModelSerializer):
     
-    #invoice_number = serializers.StringRelatedField(read_only=True)
+   
     item_name = serializers.CharField(source='item.name_item.name_item', read_only=True)
     item_image = serializers.URLField(source='item.name_item.img_url', read_only=True)
-    #category = serializers.StringRelatedField()
-    #item_type = serializers.StringRelatedField()
-    #status = serializers.PrimaryKeyRelatedField(queryset=Status_item)
-    #local = serializers.PrimaryKeyRelatedField(queryset=Locals.objects.all())
-
+    category = ItemCategorySerializer()
+    item_type = EquipamamentTypeSerializer()
+    status = StatusItemSerializer()
+    local = LocalSerializer()
 
 
     def create(self, validated_data): 
@@ -77,9 +109,6 @@ class StockSerializer(serializers.ModelSerializer):
                 mov.save()
         return super().update(instance, validated_data)
 
-
-
-
     
     class Meta:
         model = Stock
@@ -98,24 +127,3 @@ class StockSerializer(serializers.ModelSerializer):
             'warranty',
         ]
 
-
-class ItemCategorySerializer(serializers.ModelSerializer):
-    
-    
-    class Meta:
-        model = Item_category
-        fields = '__all__'
-
-
-class StatusItemSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Status_item
-        fields = '__all__'
-
-
-class LocalSerializer(serializers.ModelSerializer):
-
-    class Meta: 
-        model = Locals
-        fields = '__all__'
