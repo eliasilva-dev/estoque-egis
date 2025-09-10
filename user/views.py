@@ -60,7 +60,7 @@ class LoginView(APIView):
 
             )
             return response
-        return Response({"error:" "Credenciais inválidas"})
+        return Response({"error:" "Credenciais inválidas"},status=404)
             
 
 class LogoutView(APIView):
