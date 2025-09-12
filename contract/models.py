@@ -64,6 +64,8 @@ class Proposal(models.Model):
       description = models.TextField(
            verbose_name='Descrição'
       )
+
+      is_registred = models.BooleanField(null=True, blank=True, default=False)
     
       created_at = models.DateTimeField(
            auto_now_add=True,

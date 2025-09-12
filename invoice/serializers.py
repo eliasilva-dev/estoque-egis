@@ -22,12 +22,13 @@ class ItemCatalogSerializer(serializers.ModelSerializer):
 
 class InvoiceItemSerializer(serializers.ModelSerializer):
 
-    name_item =ItemCatalogSerializer(read_only=True)
+    catalog_item = ItemCatalogSerializer(read_only=True)
+    invoice_number = serializers.CharField(source="invoice_number.invoice_number")
     
     
     class Meta:
         model = Invoice_item
-        fields = ['name_item', 'invoice_number', 'quantity', 'unit_cost', 'is_registred']
+        fields = ['catalog_item', 'invoice_number', 'quantity', 'unit_cost', 'is_registred']
 
 
 

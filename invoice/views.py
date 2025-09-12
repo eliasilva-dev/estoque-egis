@@ -16,7 +16,7 @@ class InvoiceViewSet(viewsets.ModelViewSet):
 
 
 class InvoiceItemViewSet(viewsets.ModelViewSet):
-    queryset = Invoice_item.objects.select_related('name_item')
+    queryset = Invoice_item.objects.all()
     serializer_class = InvoiceItemSerializer
 
 

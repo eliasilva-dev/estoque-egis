@@ -2,6 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from invoice.models import Invoice, Invoice_item, Invoice_type, Item_catalog
+from contract.models import Proposal
 
 
 
@@ -19,18 +20,33 @@ class Item_catalog(admin.ModelAdmin):
 
 
 @admin.register(Invoice)
-class Invoice(admin.ModelAdmin):
+class InvoiceAdmin(admin.ModelAdmin):
     list_display =  ['proposal', 'invoice_type', 'invoice_number', 'description', 'price', 'is_complete']
     search_fields = ['invoice_number','proposal__number_proposal']
     list_filter = ['price', 'invoice_type']
 
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "proposal":
+            kwargs["queryset"] = Proposal.objects.filter(is_registred=False)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
 
 @admin.register(Invoice_item)
-class Invoice_item(admin.ModelAdmin):
-    list_display = ['invoice_number', 'name_item', 'unit_cost', 'quantity', 'is_registred']
-    search_fields = ['invoice_number__invoice_number', 'name_item__name_item']
+class InvoiceItemAdmin(admin.ModelAdmin):
+    list_display = ['invoice_number', 'catalog_item', 'unit_cost', 'quantity', 'is_registred']
+    search_fields = ['invoice_number__invoice_number', 'catalog_item__name_item']
     list_filter = ['is_registred']
+
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "invoice_number":
+            kwargs["queryset"] = Invoice.objects.filter(is_complete=False) 
+        
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
 
 
 

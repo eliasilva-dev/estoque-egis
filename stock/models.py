@@ -59,12 +59,20 @@ class Locals(models.Model):
 
 
 class Stock(models.Model):
+  
+
+    custom_id = models.CharField(max_length=10, unique=True, null=True, blank=True )
+    
+    
     item = models.ForeignKey(
         Invoice_item,
         on_delete=models.PROTECT,
         related_name='item_nota',
         verbose_name='Item da nota',
     )
+
+
+
     category = models.ForeignKey(
         Item_category,
         on_delete=models.PROTECT,
@@ -145,5 +153,42 @@ class Stock(models.Model):
     def __str__(self):
         return str(self.serial_number)
 
+
+
+    def save(self, **kwargs):
+        PREFIX_TAGS = {
+            "Notebook avançado":"NTAV-",
+            "Notebook office":"NTOFF-",
+            "Telefone":"TEL-",
+            "Headset":"HDSET-",
+            "Chip":"CHP-",
+            "Periferico":"PER-"
+        }
+        category = self.category
+        item = self.item
+
+        is_new_item = self.pk is None
+        super().save(**kwargs)
+
+        if is_new_item:
+            print("Entrei em novo item")
+            print("Categoria:", category.category_name)
+            if category.category_name == "Computador":
+               print("Entrei no if da categoria")
+               nomalized_name = str(item.name_item)
+               nomalized_name = nomalized_name.strip()
+               print("Nomalized:", nomalized_name)
+               print("Nome do item entrando:", item.name_item)
+               prefix = PREFIX_TAGS.get(nomalized_name, "ERR-")
+               print("Prefixo obtido: ", prefix)
+            else:
+                prefix = PREFIX_TAGS.get(category.category_name, "CATERR-")
+            
+            self.custom_id = f"{prefix}{self.id}"
+        
+
+            return super().save(update_fields=["custom_id"])
+        return super().save(**kwargs)
+        
 
 

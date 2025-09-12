@@ -95,7 +95,7 @@ class Invoice_item(models.Model):
         verbose_name='Numero da nota',
 
     )
-    name_item = models.ForeignKey(
+    catalog_item = models.ForeignKey(
         Item_catalog,
         on_delete=models.PROTECT,
         related_name='itens',
