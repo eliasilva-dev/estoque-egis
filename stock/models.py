@@ -175,10 +175,10 @@ class Stock(models.Model):
             print("Categoria:", category.category_name)
             if category.category_name == "Computador":
                print("Entrei no if da categoria")
-               nomalized_name = str(item.name_item)
+               nomalized_name = str(item.catalog_item)
                nomalized_name = nomalized_name.strip()
                print("Nomalized:", nomalized_name)
-               print("Nome do item entrando:", item.name_item)
+               print("Nome do item entrando:", item.catalog_item)
                prefix = PREFIX_TAGS.get(nomalized_name, "ERR-")
                print("Prefixo obtido: ", prefix)
             else:

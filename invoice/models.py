@@ -129,7 +129,7 @@ class Invoice_item(models.Model):
 
 
     def __str__(self):
-        return str(self.name_item)
+        return str(self.catalog_item)
 
 
     

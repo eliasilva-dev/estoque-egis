@@ -41,12 +41,9 @@ class LocalSerializer(serializers.ModelSerializer):
 class StockSerializer(serializers.ModelSerializer):
     
    
-    item_name = serializers.CharField(source='item.name_item.name_item', read_only=True)
-    item_image = serializers.URLField(source='item.name_item.img_url', read_only=True)
-    category = ItemCategorySerializer()
-    item_type = EquipamamentTypeSerializer()
-    status = StatusItemSerializer()
-    local = LocalSerializer()
+    item_name = serializers.CharField(source='item.catalog_item.name_item', read_only=True)
+    item_image = serializers.URLField(source='item.catalog_item.img_url', read_only=True)
+    
 
 
     def create(self, validated_data): 
@@ -115,6 +112,7 @@ class StockSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'item_name',
+            'item',
             'serial_number',
             'property_number',
             'item_image',
