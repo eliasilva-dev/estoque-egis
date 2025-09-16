@@ -81,6 +81,12 @@ class isAuthView(APIView):
     def get(self, request):
         return Response({"authenticated": True})
 
+class getUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({"username": user.username}, 200)
 
 
 
