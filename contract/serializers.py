@@ -4,9 +4,12 @@ from contract.models import Contract, Proposal
 
 class ContractSerializer(serializers.ModelSerializer):
 
+    start_date = serializers.DateField(format="%d/%m/%Y")
+    end_date = serializers.DateField(format="%d/%m/%Y")
+
     class Meta: 
         model = Contract
-        fields = '__all__'
+        fields = ['id', 'number_contract', 'contract_name', 'start_date', 'end_date', 'is_active', 'was_delete']
 
 
 class ProposalSerializer(serializers.ModelSerializer):

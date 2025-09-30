@@ -10,7 +10,8 @@ class Contract(models.Model):
     )
     contract_name = models.CharField(
         max_length=50,
-        verbose_name='Nome do contrato'
+        verbose_name='Nome do contrato',
+        
     )
     start_date = models.DateField(
         verbose_name='Data de Inicio'
@@ -23,6 +24,10 @@ class Contract(models.Model):
     is_active = models.BooleanField(
          default=True,
          verbose_name='Ativo'
+    )
+
+    was_delete = models.BooleanField(
+         default=False
     )
 
     created_at = models.DateTimeField(
