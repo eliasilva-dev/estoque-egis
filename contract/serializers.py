@@ -13,7 +13,14 @@ class ContractSerializer(serializers.ModelSerializer):
 
 
 class ProposalSerializer(serializers.ModelSerializer):
-
     class Meta: 
         model = Proposal
         fields = '__all__'
+
+
+class ListProposalSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    contract = serializers.CharField()
+    number_proposal = serializers.CharField()
+    is_registred = serializers.BooleanField()
+    description = serializers.CharField()
