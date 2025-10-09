@@ -29,4 +29,5 @@ class ListProposalSerializer(serializers.Serializer):
     number_proposal = serializers.CharField()
     is_registred = serializers.BooleanField()
     description = serializers.CharField()
+    was_delete = serializers.BooleanField()
 

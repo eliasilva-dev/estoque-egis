@@ -13,6 +13,6 @@ class Contract(admin.ModelAdmin):
 
 @admin.register(Proposal)
 class Proposal(admin.ModelAdmin):
-    list_display=['contract', 'number_proposal', 'description', 'is_registred']
+    list_display=['contract', 'number_proposal', 'description', 'is_registred', 'was_delete']
     search_fields=['number_proposal']
     list_filter = ['contract']

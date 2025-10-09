@@ -31,6 +31,19 @@ class ProposalViewSet(viewsets.ModelViewSet):
         response_serializer = ListProposalSerializer(proposal)
 
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+    
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        proposal = serializer.save()
+
+        response_serializer = ListProposalSerializer(proposal)
+
+        return Response(response_serializer.data, status=status.HTTP_200_OK)
+       
+    
+    
 
 
 

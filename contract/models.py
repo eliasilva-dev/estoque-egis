@@ -71,6 +71,8 @@ class Proposal(models.Model):
       )
 
       is_registred = models.BooleanField(null=True, blank=True, default=False)
+
+      was_delete = models.BooleanField(default=False)
     
       created_at = models.DateTimeField(
            auto_now_add=True,
