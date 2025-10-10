@@ -20,7 +20,7 @@ class OnlyContractActiveSerializer(serializers.Serializer):
 class ProposalSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Proposal
-        fields = ['contract', 'number_proposal', 'description', 'is_registred']
+        fields = ['contract', 'number_proposal', 'description', 'is_registred', 'was_delete']
 
 
 class ListProposalSerializer(serializers.Serializer):

@@ -41,6 +41,17 @@ class ProposalViewSet(viewsets.ModelViewSet):
         response_serializer = ListProposalSerializer(proposal)
 
         return Response(response_serializer.data, status=status.HTTP_200_OK)
+    
+    def partial_update(self, request, *args, **kwargs):
+       
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        proposal = serializer.save()
+
+        response_serializer = ListProposalSerializer(proposal)
+        return Response(response_serializer.data, status=status.HTTP_200_OK)
+
        
     
     
