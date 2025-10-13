@@ -8,7 +8,20 @@ class InvoiceSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Invoice
-        fields = '__all__'
+        fields = ['proposal','invoice_number', 'description', 'invoice_type', 'price', 'is_complete']
+
+
+
+class InvoiceReadSerializer(serializers.Serializer):
+    proposal = serializers.CharField()
+    invoice_number = serializers.CharField()
+    description = serializers.CharField()
+    price = serializers.DecimalField(max_digits=10, decimal_places=2)
+    invoice_type = serializers.CharField()
+    is_complete = serializers.BooleanField()
+
+
+
 
 
 
