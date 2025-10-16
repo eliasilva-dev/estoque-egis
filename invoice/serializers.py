@@ -21,6 +21,10 @@ class InvoiceReadSerializer(serializers.Serializer):
     is_complete = serializers.BooleanField()
 
 
+class NotRegisteredInvoices(serializers.Serializer):
+     id = serializers.IntegerField()
+     invoice_number = serializers.CharField()
+
 
 
 

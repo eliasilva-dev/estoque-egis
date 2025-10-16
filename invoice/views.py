@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 from rest_framework import viewsets
 from invoice.models import Invoice, Invoice_item, Invoice_type, Item_catalog
-from invoice.serializers import InvoiceSerializer, InvoiceReadSerializer,InvoiceTypeSerializer, InvoiceItemSerializer, ItemCatalogSerializer
+from invoice.serializers import InvoiceSerializer, InvoiceReadSerializer,InvoiceTypeSerializer, InvoiceItemSerializer, ItemCatalogSerializer, NotRegisteredInvoices
 
 
 
@@ -19,7 +19,9 @@ class InvoiceListReadOnly(viewsets.ReadOnlyModelViewSet):
     queryset = Invoice.objects.all()
     serializer_class = InvoiceReadSerializer
 
-
+class NotRegisterInvoicesView(viewsets.ReadOnlyModelViewSet):
+    queryset = Invoice.objects.filter(is_complete=False)
+    serializer_class = NotRegisteredInvoices
 
 
 class InvoiceItemViewSet(viewsets.ModelViewSet):
