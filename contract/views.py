@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from contract.models import Contract, Proposal
-from contract.serializers import ContractSerializer, ProposalSerializer, ListProposalSerializer, OnlyContractActiveSerializer
+from contract.serializers import ContractSerializer, ProposalSerializer, ListProposalSerializer, OnlyContractActiveSerializer, OnlyProposalUnregistred
 # Create your views here.
 
 
@@ -55,7 +55,9 @@ class ProposalViewSet(viewsets.ModelViewSet):
        
     
     
-
+class UnregistredProposalsViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Proposal.objects.filter(is_registred = False)
+    serializer_class = OnlyProposalUnregistred
 
 
 class ListProposalViewSet(viewsets.ReadOnlyModelViewSet):

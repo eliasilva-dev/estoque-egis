@@ -23,6 +23,11 @@ class ProposalSerializer(serializers.ModelSerializer):
         fields = ['contract', 'number_proposal', 'description', 'is_registred', 'was_delete']
 
 
+class OnlyProposalUnregistred(serializers.Serializer):
+    id = serializers.IntegerField()
+    number_proposal = serializers.CharField()
+
+
 class ListProposalSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     contract = serializers.CharField()
