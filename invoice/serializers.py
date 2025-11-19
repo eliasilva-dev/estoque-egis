@@ -8,11 +8,15 @@ class InvoiceSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Invoice
-        fields = ['proposal','invoice_number', 'description', 'invoice_type', 'price', 'is_complete']
+        fields = ['id', 'proposal','invoice_number', 'description', 'invoice_type', 'price', 'is_complete']
+
+
+
 
 
 
 class InvoiceReadSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     proposal = serializers.CharField()
     invoice_number = serializers.CharField()
     description = serializers.CharField()
@@ -26,14 +30,16 @@ class NotRegisteredInvoices(serializers.Serializer):
      invoice_number = serializers.CharField()
 
 
-
-
-
 class ItemCatalogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item_catalog
-        fields = ['name_item', 'img_url']
+        fields = ['id','name_item', 'img_url']
+
+
+
+
+
 
 
 

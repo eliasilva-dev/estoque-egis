@@ -1,6 +1,6 @@
 from django.shortcuts import render
-
-# Create your views here
+from rest_framework.response import Response
+from rest_framework import status
 
 from rest_framework import viewsets
 from invoice.models import Invoice, Invoice_item, Invoice_type, Item_catalog
@@ -13,6 +13,31 @@ from invoice.serializers import InvoiceSerializer, InvoiceReadSerializer,Invoice
 class InvoiceViewSet(viewsets.ModelViewSet):
     queryset = Invoice.objects.all()
     serializer_class = InvoiceSerializer
+
+
+    def create(self, request, *args, **kwargs):
+        #get serializer on request
+        serializer = self.get_serializer(data=request.data)
+        #verify if the serializer is valid
+        serializer.is_valid(raise_exception=True)
+        #save the obj of serializer 
+        invoice = serializer.save()
+
+        #response to tranform serializer
+        response_serializer = InvoiceReadSerializer(invoice)
+        
+        return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+    
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        invoice = serializer.save()
+
+        response_serializer = InvoiceReadSerializer(invoice)
+
+        return Response(response_serializer.data, status=status.HTTP_200_OK)
+       
 
 
 class InvoiceListReadOnly(viewsets.ReadOnlyModelViewSet):

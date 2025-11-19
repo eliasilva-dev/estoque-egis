@@ -11,7 +11,7 @@ router = DefaultRouter()
 
 router.register('invoices', InvoiceViewSet)
 router.register('invoice/list', InvoiceListReadOnly, basename='invoice-list')
-router.register('invoice/unregistered', NotRegisterInvoicesView, basename='not-registered-invoices')
+router.register('invoice/unregister', NotRegisterInvoicesView, basename='not-registered-invoices')
 router.register('invoiceitem', InvoiceItemViewSet)
 router.register('invoicetypes', InvoicetypeViewSet)
 router.register('catalog', ItemCatalogViewSet)
