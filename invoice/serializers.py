@@ -43,16 +43,19 @@ class ItemCatalogSerializer(serializers.ModelSerializer):
 
 
 
-class InvoiceItemSerializer(serializers.ModelSerializer):
-
-    catalog_item = ItemCatalogSerializer(read_only=True)
-    invoice_number = serializers.CharField(source="invoice_number.invoice_number")
-    
-    
+class InvoiceItemSerializer(serializers.ModelSerializer):    
     class Meta:
         model = Invoice_item
         fields = ['catalog_item', 'invoice_number', 'quantity', 'unit_cost', 'is_registred']
 
+
+class InvoiceItemReadOnlySerializer(serializers.Serializer):
+     
+     catalog_item = serializers.CharField()
+     invoice_number = serializers.CharField()
+     unit_cost = serializers.CharField()
+     quantity = serializers.DecimalField(max_digits=10, decimal_places=2)
+     is_registred = serializers.BooleanField()
 
 
 
