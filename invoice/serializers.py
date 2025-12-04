@@ -54,7 +54,7 @@ class InvoiceItemReadOnlySerializer(serializers.Serializer):
      catalog_item = serializers.CharField()
      invoice_number = serializers.CharField()
      unit_cost = serializers.CharField()
-     quantity = serializers.DecimalField(max_digits=10, decimal_places=2)
+     quantity = serializers.IntegerField()
      is_registred = serializers.BooleanField()
 
 
