@@ -7,7 +7,7 @@ from stock.models import Item_category, Status_item, Equipament_type, Locals, St
 
 @admin.register(Stock)
 class Stock(admin.ModelAdmin):
-    list_display = ['id','custom_id','item','serial_number', 'category','property_number', 'request_unit', 'pay_unit','local', 'status', 'item_type','warranty',  'updated_at']
+    list_display = ['id','item','serial_number', 'category','property_number', 'request_unit', 'pay_unit','local', 'status', 'item_type','warranty',  'updated_at']
 
     search_fields = ['serial_number', 'property_number']
     list_filter = ['status', 'local', 'item_type']
