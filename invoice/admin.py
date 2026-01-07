@@ -21,7 +21,7 @@ class Item_catalog(admin.ModelAdmin):
 
 @admin.register(Invoice)
 class InvoiceAdmin(admin.ModelAdmin):
-    list_display =  ['proposal', 'invoice_type', 'invoice_number', 'description', 'price', 'is_complete']
+    list_display =  ['id', 'proposal', 'invoice_type', 'invoice_number', 'description', 'price', 'is_complete']
     search_fields = ['invoice_number','proposal__number_proposal']
     list_filter = ['price', 'invoice_type']
 
@@ -35,7 +35,7 @@ class InvoiceAdmin(admin.ModelAdmin):
 
 @admin.register(Invoice_item)
 class InvoiceItemAdmin(admin.ModelAdmin):
-    list_display = ['invoice_number', 'catalog_item', 'unit_cost', 'quantity', 'is_registred']
+    list_display = ['id', 'invoice_number', 'catalog_item', 'unit_cost', 'quantity', 'is_registred']
     search_fields = ['invoice_number__invoice_number', 'catalog_item__name_item']
     list_filter = ['is_registred']
 

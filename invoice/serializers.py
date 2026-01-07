@@ -49,6 +49,15 @@ class InvoiceItemSerializer(serializers.ModelSerializer):
         fields = ['catalog_item', 'invoice_number', 'quantity', 'unit_cost', 'is_registred']
 
 
+
+#busca apenas os item não registrados em invoice itens
+class InvoiceItemNotRegisterSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    catalog_item = serializers.CharField()
+
+
+
+
 class InvoiceItemReadOnlySerializer(serializers.Serializer):
      
      catalog_item = serializers.CharField()

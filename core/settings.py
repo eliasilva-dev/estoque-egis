@@ -153,7 +153,7 @@ SIMPLE_JWT = {
     "AUTH_COOKIE_SAMESITE": "Lax", 
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
-    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=4),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1)
 }
 

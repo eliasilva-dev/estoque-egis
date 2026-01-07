@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.db import transaction
 from collections import defaultdict
+from invoice.models import Invoice
 from stock.models import Stock, Item_category, Status_item, Locals, Equipament_type, Invoice_item
 from movimentation.models import Movimentations, Movimentation_type
 from invoice.serializers import ItemCatalogSerializer
@@ -104,6 +105,7 @@ class StockListSerializer(serializers.ListSerializer):
         # 3) Criar Movimentations em lote
         request = self.context.get('request')
         user = getattr(request, 'user', None)
+      
         mov_entrada = Movimentation_type.objects.get(movimentation_name='Entrada')
         mov_saida = Movimentation_type.objects.get(movimentation_name='Saida')
 
@@ -133,6 +135,7 @@ class StockListSerializer(serializers.ListSerializer):
 
         # 4) Atualizar Invoice_item.is_registred para os itens afetados
         affected_item_ids = {d['item'].id for d in validated_data_list}
+
         for item_id in affected_item_ids:
             inv_item = Invoice_item.objects.select_for_update().get(pk=item_id)
             total_required = int(inv_item.quantity or 0)
@@ -141,6 +144,19 @@ class StockListSerializer(serializers.ListSerializer):
             if inv_item.is_registred != is_done:
                 inv_item.is_registred = is_done
                 inv_item.save(update_fields=['is_registred'])
+
+        invoice_ids = set(Invoice_item.objects.filter(id__in=affected_item_ids).values_list('invoice_number_id', flat=True)
+        )
+        for invoice_id in invoice_ids:
+            has_unregistered_items = Invoice_item.objects.filter(
+                invoice_number_id=invoice_id,
+                is_registred=False
+            ).exists()
+
+            if not has_unregistered_items:
+                Invoice.objects.filter(id=invoice_id).update(
+                    is_complete=True
+                )
 
         return created_stocks
 

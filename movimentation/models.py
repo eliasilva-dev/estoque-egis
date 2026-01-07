@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from stock.models import Stock
 from user.models import User
 # Create your models here.
@@ -21,7 +22,7 @@ class Movimentations(models.Model):
     item = models.ForeignKey(
         Stock,
         on_delete=models.PROTECT,
-        related_name='stock',
+        related_name='movimentations',
         verbose_name='Número de série',
 
     )
@@ -31,7 +32,7 @@ class Movimentations(models.Model):
     movimentation = models.ForeignKey(
         Movimentation_type,
         on_delete=models.PROTECT,
-        related_name='movimentation',
+        related_name='movimentations',
         verbose_name='Tipo de movimentação',
 
     )
@@ -49,7 +50,7 @@ class Movimentations(models.Model):
     )
 
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True,
         null=True,
         on_delete=models.PROTECT,

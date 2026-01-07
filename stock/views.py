@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.db import transaction
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response 
+from rest_framework import status
 
 # Create your views here.
 from rest_framework import viewsets
@@ -9,14 +12,10 @@ from stock.serializers import StockSerializer, ItemCategorySerializer, StatusIte
 
 
 class StockViewSet(viewsets.ModelViewSet):
+
+    permission_classes = [IsAuthenticated]
     
-    queryset = Stock.objects.select_related(
-        'item',
-        'category',
-        'status',
-        'item_type',
-        'local'
-    )
+    queryset = Stock.objects.all()
     serializer_class = StockSerializer   
 
 
@@ -26,6 +25,9 @@ class StockViewSet(viewsets.ModelViewSet):
         is_list = isinstance(request.data, list)
         serializer = self.get_serializer(data=request.data, many=is_list)
         serializer.is_valid(raise_exception=True)
+        if not serializer.is_valid():
+            print(serializer.errors)
+            return Response(serializer.errors, status=400)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

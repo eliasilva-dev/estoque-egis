@@ -4,7 +4,7 @@ from rest_framework import status
 
 from rest_framework import viewsets
 from invoice.models import Invoice, Invoice_item, Invoice_type, Item_catalog
-from invoice.serializers import InvoiceSerializer, InvoiceReadSerializer,InvoiceTypeSerializer, InvoiceItemSerializer, ItemCatalogSerializer, NotRegisteredInvoices, InvoiceItemReadOnlySerializer
+from invoice.serializers import InvoiceSerializer, InvoiceReadSerializer,InvoiceTypeSerializer, InvoiceItemSerializer, ItemCatalogSerializer, NotRegisteredInvoices, InvoiceItemReadOnlySerializer, InvoiceItemNotRegisterSerializer
 
 
 
@@ -52,6 +52,11 @@ class NotRegisterInvoicesView(viewsets.ReadOnlyModelViewSet):
 class InvoiceItemViewSet(viewsets.ModelViewSet):
     queryset = Invoice_item.objects.all()
     serializer_class = InvoiceItemSerializer
+
+
+class InvoiceItemNotRegisterViewSet(viewsets.ModelViewSet):
+    queryset = Invoice_item.objects.filter(is_registred=False)
+    serializer_class = InvoiceItemNotRegisterSerializer
 
 class InvoiceItemReadViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Invoice_item.objects.all()
