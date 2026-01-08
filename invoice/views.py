@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from rest_framework.response import Response
+from django.db.models import Sum, Count
 from rest_framework import status
+from rest_framework.views import APIView
 
 from rest_framework import viewsets
 from invoice.models import Invoice, Invoice_item, Invoice_type, Item_catalog
@@ -37,7 +39,45 @@ class InvoiceViewSet(viewsets.ModelViewSet):
         response_serializer = InvoiceReadSerializer(invoice)
 
         return Response(response_serializer.data, status=status.HTTP_200_OK)
-       
+
+
+
+class InvoiceStatsView(APIView):
+
+    def get(self, request):
+        total = Invoice.objects.aggregate(
+            total_notas=Sum('price')
+        )["total_notas"]
+
+        total_cadastrada_value = Invoice.objects.filter(is_complete=True).aggregate(
+            total_registred_value=Sum('price')
+        )["total_registred_value"]
+
+
+        registred_invoice = Invoice.objects.filter(is_complete=True).aggregate(
+            total_registred=Count('id')
+        )["total_registred"]    
+
+        invoice_to_register = Invoice.objects.filter(is_complete=False).aggregate(
+            all_invoice_to_register=Count('id')
+        )["all_invoice_to_register"]
+
+
+
+
+
+        return Response({
+            "total" : total,
+            "total_registred" : total_cadastrada_value,
+            "registred_invoice" : registred_invoice,
+            "invoice_to_register" : invoice_to_register
+        })
+
+    
+
+
+
+
 
 
 class InvoiceListReadOnly(viewsets.ReadOnlyModelViewSet):
