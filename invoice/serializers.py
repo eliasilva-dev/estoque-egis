@@ -34,7 +34,7 @@ class ItemCatalogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item_catalog
-        fields = ['id','name_item', 'img_url']
+        fields = "__all__"
 
 
 

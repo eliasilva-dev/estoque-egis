@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'cloudinary_storage',
+    'cloudinary',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     'authentification',
     'rest_framework_simplejwt',
     'corsheaders',
+   
 ]
 
 MIDDLEWARE = [
@@ -162,3 +165,33 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
      "http://localhost:5173",
 ]
+
+
+import os
+
+#Configuração cloudnary
+#Comandos de configuração 
+'''
+setx -> Powershell para definir variaveis de ambiente
+verificar valores no site da cloudnary
+
+CLOUDINARY_CLOUD_NAME'),
+CLOUDINARY_API_KEY'),
+CLOUDINARY_API_SECRET'),
+
+
+'''
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+}
+
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}

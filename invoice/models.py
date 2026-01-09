@@ -24,10 +24,10 @@ class Item_catalog(models.Model):
         unique=True,
         verbose_name='Nome do Item'
     )
-    img_url = models.URLField(
-        verbose_name='Link da Imagem',
+    image = models.ImageField(
+        upload_to='catalog_items/',
         blank=True,
-        null=True,
+        null=True
     )
 
     class Meta: 
