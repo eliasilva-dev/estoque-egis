@@ -8,7 +8,7 @@ from rest_framework import status
 from rest_framework import viewsets
 from stock.models import Stock, Item_category, Status_item, Locals, Equipament_type
 
-from stock.serializers import StockSerializer, ItemCategorySerializer, StatusItemSerializer, LocalSerializer, EquipamamentTypeSerializer
+from stock.serializers import StockSerializer, ItemCategorySerializer, StatusItemSerializer, LocalSerializer, EquipamamentTypeSerializer, StockReadSerializer
 
 
 class StockViewSet(viewsets.ModelViewSet):
@@ -17,7 +17,6 @@ class StockViewSet(viewsets.ModelViewSet):
     
     queryset = Stock.objects.all()
     serializer_class = StockSerializer   
-
 
 
     @transaction.atomic
@@ -56,3 +55,6 @@ class EquipamentTypeViewSet(viewsets.ModelViewSet):
 
 
 
+class StockReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Stock.objects.all()
+    serializer_class = StockReadSerializer

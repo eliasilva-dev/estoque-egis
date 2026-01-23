@@ -59,20 +59,12 @@ class Locals(models.Model):
 
 
 class Stock(models.Model):
-  
-
-  
-    
-    
     item = models.ForeignKey(
         Invoice_item,
         on_delete=models.PROTECT,
         related_name='item_nota',
         verbose_name='Item da nota',
     )
-
-
-
     category = models.ForeignKey(
         Item_category,
         on_delete=models.PROTECT,
@@ -99,7 +91,6 @@ class Stock(models.Model):
         on_delete=models.PROTECT,
         verbose_name='Localidade'
     )
-
     serial_number = models.CharField(
         max_length=40,
         unique=True,
@@ -112,7 +103,6 @@ class Stock(models.Model):
         blank=True,
         verbose_name='Patrimônio'
     )
-
     request_unit = models.CharField(
         max_length=10,
         default='703',
@@ -120,35 +110,29 @@ class Stock(models.Model):
         null=True,
         verbose_name='Unidade solicitante',
     )
-
     pay_unit = models.CharField(
         max_length=10,
         null=True,
         blank=True, 
         verbose_name='Unidade pagante'
     )
-
     warranty = models.DateField(
         null=True,
         blank=True,
         verbose_name='Garantia'
 
     )
-
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Criado em'
     )
-
     updated_at = models.DateTimeField(
         auto_now=True,
         verbose_name='Atualizaddo em'
     )
-
     class Meta:
         verbose_name ='Estoque'
         verbose_name_plural = 'Estoque'
-
 
     def __str__(self):
         return str(self.serial_number)

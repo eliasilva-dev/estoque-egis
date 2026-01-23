@@ -237,3 +237,19 @@ class StockSerializer(serializers.ModelSerializer):
             )
 
         return super().update(instance, validated_data)
+
+
+
+class StockReadSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    item = serializers.CharField()
+    category = serializers.CharField()
+    status = serializers.CharField()
+    item_type = serializers.CharField()
+    local = serializers.CharField()
+    serial_number = serializers.CharField()
+    property_number = serializers.CharField()
+    request_unit = serializers.CharField()
+    pay_unit = serializers.CharField()
+    warranty = serializers.DateField(format="%d/%m/%y")
+    
