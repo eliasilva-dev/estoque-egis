@@ -243,6 +243,7 @@ class StockSerializer(serializers.ModelSerializer):
 class StockReadSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     item = serializers.CharField()
+    item_image = serializers.URLField(source='item.catalog_item.image.url', read_only=True)
     category = serializers.CharField()
     status = serializers.CharField()
     item_type = serializers.CharField()

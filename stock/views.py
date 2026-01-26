@@ -13,7 +13,7 @@ from stock.serializers import StockSerializer, ItemCategorySerializer, StatusIte
 
 class StockViewSet(viewsets.ModelViewSet):
 
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
     
     queryset = Stock.objects.all()
     serializer_class = StockSerializer   
