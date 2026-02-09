@@ -4,7 +4,7 @@ from movimentation.models import Movimentation_type, Movimentations
 
 @admin.register(Movimentation_type)
 class Movimentation_type(admin.ModelAdmin):
-    list_display = ['movimentation_name']
+    list_display = ['code']
 
 
 @admin.register(Movimentations)

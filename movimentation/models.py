@@ -1,24 +1,31 @@
 from django.db import models
 from django.conf import settings
-from stock.models import Stock
+from stock.models import Stock, Locals, Status_item
 from user.models import User
 # Create your models here.
 
 
 class Movimentation_type(models.Model):
-    movimentation_name = models.CharField(max_length=15, unique=True)
+    code = models.CharField(max_length=20,  verbose_name='Código', default='')
 
-
+    description = models.CharField(max_length=50, verbose_name='Descrição', default='')
 
     class Meta: 
-        verbose_name='Movimentação'
+        verbose_name='Tipo de Movimentação'
         verbose_name_plural = 'Tipos de movimentação'
 
     def __str__(self):
-        return str(self.movimentation_name)
+        return str(self.description)
 
 
 class Movimentations(models.Model):
+
+    MOVIMENT_FLOW = (
+        ('IN', 'Entrada'),
+        ('OUT', 'Saída')
+    )
+
+
     item = models.ForeignKey(
         Stock,
         on_delete=models.PROTECT,
@@ -37,10 +44,26 @@ class Movimentations(models.Model):
 
     )
 
+    moviment_flow = models.CharField(max_length=3,
+                                     choices=MOVIMENT_FLOW, verbose_name='Fluxo de movimentação')
+    
+    previous_status = models.ForeignKey(
+        Status_item,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        verbose_name='Status anterior',
+        related_name='+'
+        
+    )
+    new_status = models.ForeignKey(Status_item, on_delete=models.PROTECT,related_name='+', verbose_name='Novo status')
     date = models.DateField(verbose_name='Data', auto_now_add=True)
 
-    local = models.CharField(
-        max_length=20,
+    local = models.ForeignKey(
+        Locals,
+        on_delete=models.PROTECT,
+
+        
         verbose_name='Localidade'
     )
     observation = models.TextField(

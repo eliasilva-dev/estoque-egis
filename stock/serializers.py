@@ -5,6 +5,7 @@ from invoice.models import Invoice
 from stock.models import Stock, Item_category, Status_item, Locals, Equipament_type, Invoice_item
 from movimentation.models import Movimentations, Movimentation_type
 from invoice.serializers import ItemCatalogSerializer
+from movimentation.rules import STATUS_TO_MOV_CODE
 
 class EquipamamentTypeSerializer(serializers.ModelSerializer):
 
@@ -106,29 +107,49 @@ class StockListSerializer(serializers.ListSerializer):
         request = self.context.get('request')
         user = getattr(request, 'user', None)
       
-        mov_entrada = Movimentation_type.objects.get(movimentation_name='Entrada')
-        mov_saida = Movimentation_type.objects.get(movimentation_name='Saida')
+   
 
         movs_to_create = []
+
+        mov_types = {
+            mt.code: mt
+            for mt in Movimentation_type.objects.all()
+        }
+        
         for stock, original_data in zip(created_stocks, validated_data_list):
-            status_obj = original_data.get('status')  # instância de Status_item
+
+            status_obj = original_data.get('status') 
+            
             if not status_obj:
-                raise serializers.ValidationError({'status': ['Campo obrigatório.']})
+                raise serializers.ValidationError({
+                    'status': ['Campo obrigatório.']
+                })
+            
+            mov_code = STATUS_TO_MOV_CODE.get(status_obj.code)
+            
+            
+            if not mov_code:
+                raise serializers.ValidationError({
+                    'status': [f'Status {status_obj.code} não possui movimentação associada.']
+                })
 
-            if status_obj.status_name == "Em estoque":
-                mov_type = mov_entrada
-                observation = 'Cadastro'
-            else:
-                mov_type = mov_saida
-                observation = original_data.get('observation', '')
+            mov_type = mov_types[mov_code]
 
-            movs_to_create.append(Movimentations(
-                item=stock,
-                movimentation=mov_type,
-                local=stock.local.local_name,
-                observation=observation,
-                user=user
-            ))
+            observation = (
+                'Cadastro'
+                if mov_code == 'ENTRADA'
+                else original_data.get('observation', '')
+            )
+
+            movs_to_create.append(
+                Movimentations(
+                    item=stock,
+                    movimentation=mov_type,
+                    local=stock.local,  #  FK correta
+                    observation=observation,
+                    user=user
+                )
+            )
 
         if movs_to_create:
             Movimentations.objects.bulk_create(movs_to_create)
@@ -165,6 +186,12 @@ class StockSerializer(serializers.ModelSerializer):
     item_name = serializers.CharField(source='item.catalog_item.name_item', read_only=True)
     item_image = serializers.URLField(source='item.catalog_item.img_url', read_only=True)
 
+    observation = serializers.CharField(
+        write_only = True,
+        required=False,
+        allow_blank=True
+    )
+
     class Meta:
         model = Stock
         fields = [
@@ -181,6 +208,7 @@ class StockSerializer(serializers.ModelSerializer):
             'warranty',
             'item_name',
             'item_image',
+            'observation'
         ]
         list_serializer_class = StockListSerializer
 
@@ -192,17 +220,26 @@ class StockSerializer(serializers.ModelSerializer):
         if not status_obj:
             raise serializers.ValidationError({'status': ['Campo obrigatório.']})
 
-        if status_obj.status_name == "Em estoque":
-            mov_type = Movimentation_type.objects.get(movimentation_name='Entrada')
-            observation = 'Cadastro'
-        else:
-            mov_type = Movimentation_type.objects.get(movimentation_name='Saida')
-            observation = validated_data.get('observation', '')
+        mov_code = STATUS_TO_MOV_CODE.get(status_obj.code)
+        
+
+        if not mov_code:
+            raise serializers.ValidationError({
+                'status': [f'Status {status_obj.code} não possui movimentação associada.']
+            })
+        mov_type = Movimentation_type.objects.get(code=mov_code)
+
+        observation = (
+            'Cadastro'
+            if mov_code == 'ENTRADA'
+            else validated_data.get('observation')
+        )
+
 
         Movimentations.objects.create(
             item=stock,
             movimentation=mov_type,
-            local=stock.local.local_name,
+            local=stock.local,
             observation=observation,
             user=self.context['request'].user
         )
@@ -220,26 +257,31 @@ class StockSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        old_status = instance.status
+     
         new_status = validated_data.get('status')
 
-        if new_status and new_status != old_status:
-            if new_status.status_name == "Em estoque":
-                mov_type = Movimentation_type.objects.get(movimentation_name='Entrada')
-            else:
-                mov_type = Movimentation_type.objects.get(movimentation_name='Saida')
+        if new_status and new_status != instance.status:
+            mov_code = STATUS_TO_MOV_CODE.get(new_status.code)
+
+            if not mov_code:
+                raise serializers.ValidationError({
+                    'status': [f'Status {new_status.code} não possui movimentação associada.']
+                })
+
+            mov_type = Movimentation_type.objects.get(code=mov_code)
 
             Movimentations.objects.create(
                 item=instance,
                 movimentation=mov_type,
-                local=instance.local.local_name,
+                local=validated_data.get('local', instance.local),
+                observation=validated_data.get('observation'),
                 user=self.context['request'].user
             )
 
         return super().update(instance, validated_data)
 
 
-
+#Serializer para leitura no front end
 class StockReadSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     item = serializers.CharField()

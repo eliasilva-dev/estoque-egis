@@ -73,6 +73,7 @@ class Stock(models.Model):
         blank=True,
         verbose_name='Categoria'
     )
+    
     status = models.ForeignKey(
         Status_item,
         on_delete=models.PROTECT,
