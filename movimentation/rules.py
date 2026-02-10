@@ -1,3 +1,5 @@
+from movimentation.models import Movimentation_type
+
 MOVIMENTATION_STATUS_MAP = {
     'EM_ESTOQUE' : 'ENTRADA',
     'ATIVO' : 'SAIDA',
@@ -6,7 +8,18 @@ MOVIMENTATION_STATUS_MAP = {
 
 
 STATUS_TO_MOV_CODE = {
-    'EM_ESTOQUE': 'ENTRADA',
-    'ATIVO': 'SAIDA',
-    'EM_TRANSFERENCIA': 'SAIDA',
+    'Em estoque': 'ENTRADA',
+    'Ativo': 'SAIDA',
+    'Transferido': 'SAIDA',
 }
+
+
+
+
+mov_types = {
+    mt.code: mt
+    for mt in Movimentation_type.objects.all()
+}
+        
+
+print(mov_types.keys())

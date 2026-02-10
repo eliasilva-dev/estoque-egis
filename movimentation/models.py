@@ -56,7 +56,7 @@ class Movimentations(models.Model):
         related_name='+'
         
     )
-    new_status = models.ForeignKey(Status_item, on_delete=models.PROTECT,related_name='+', verbose_name='Novo status')
+    new_status = models.ForeignKey(Status_item, on_delete=models.PROTECT,related_name='+', verbose_name='Novo status', blank=True, null=True)
     date = models.DateField(verbose_name='Data', auto_now_add=True)
 
     local = models.ForeignKey(

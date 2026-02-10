@@ -115,6 +115,9 @@ class StockListSerializer(serializers.ListSerializer):
             mt.code: mt
             for mt in Movimentation_type.objects.all()
         }
+
+
+        
         
         for stock, original_data in zip(created_stocks, validated_data_list):
 
@@ -125,16 +128,17 @@ class StockListSerializer(serializers.ListSerializer):
                     'status': ['Campo obrigatório.']
                 })
             
-            mov_code = STATUS_TO_MOV_CODE.get(status_obj.code)
+            mov_code = STATUS_TO_MOV_CODE.get(status_obj.status_name)
+            print(mov_code)
             
             
             if not mov_code:
                 raise serializers.ValidationError({
-                    'status': [f'Status {status_obj.code} não possui movimentação associada.']
+                    'status': [f' O status {status_obj.status_name} não possui movimentação associada.']
                 })
 
             mov_type = mov_types[mov_code]
-
+            print(mov_type)
             observation = (
                 'Cadastro'
                 if mov_code == 'ENTRADA'
@@ -145,7 +149,9 @@ class StockListSerializer(serializers.ListSerializer):
                 Movimentations(
                     item=stock,
                     movimentation=mov_type,
-                    local=stock.local,  #  FK correta
+                    previous_status=stock.status,
+                    new_status=stock.status,
+                    local=stock.local,  
                     observation=observation,
                     user=user
                 )
@@ -220,12 +226,12 @@ class StockSerializer(serializers.ModelSerializer):
         if not status_obj:
             raise serializers.ValidationError({'status': ['Campo obrigatório.']})
 
-        mov_code = STATUS_TO_MOV_CODE.get(status_obj.code)
-        
+        mov_code = STATUS_TO_MOV_CODE.get(status_obj.status_name)
+        print(mov_code)   
 
         if not mov_code:
             raise serializers.ValidationError({
-                'status': [f'Status {status_obj.code} não possui movimentação associada.']
+                'status': [f'O status: "{status_obj.status_name}" não possui movimentação associada.']
             })
         mov_type = Movimentation_type.objects.get(code=mov_code)
 
@@ -261,11 +267,11 @@ class StockSerializer(serializers.ModelSerializer):
         new_status = validated_data.get('status')
 
         if new_status and new_status != instance.status:
-            mov_code = STATUS_TO_MOV_CODE.get(new_status.code)
+            mov_code = STATUS_TO_MOV_CODE.get(new_status.status_name)
 
             if not mov_code:
                 raise serializers.ValidationError({
-                    'status': [f'Status {new_status.code} não possui movimentação associada.']
+                    'status': [f'Status {new_status.status_name} não possui movimentação associada.']
                 })
 
             mov_type = Movimentation_type.objects.get(code=mov_code)
