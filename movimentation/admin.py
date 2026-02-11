@@ -9,6 +9,6 @@ class Movimentation_type(admin.ModelAdmin):
 
 @admin.register(Movimentations)
 class Movimentations(admin.ModelAdmin):
-    list_display = ['item', 'movimentation', 'date','local','observation', 'user']
+    list_display = ['item', 'movimentation', 'previous_status', 'new_status','date','local','observation', 'user']
     search_fields = ['stock__serial_number']
     list_filter =  ['date', 'movimentation']

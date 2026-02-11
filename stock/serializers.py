@@ -279,6 +279,8 @@ class StockSerializer(serializers.ModelSerializer):
             Movimentations.objects.create(
                 item=instance,
                 movimentation=mov_type,
+                previous_status=instance.status,
+                new_status=new_status,
                 local=validated_data.get('local', instance.local),
                 observation=validated_data.get('observation'),
                 user=self.context['request'].user
