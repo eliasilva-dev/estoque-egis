@@ -1,10 +1,12 @@
 from django.shortcuts import render
+from django.utils import timezone
 from django.db import transaction
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response 
 from rest_framework import status
-
+from rest_framework.views import APIView
 # Create your views here.
+from django.db.models import Sum, Count
 from rest_framework import viewsets
 from stock.models import Stock, Item_category, Status_item, Locals, Equipament_type
 
@@ -58,3 +60,30 @@ class EquipamentTypeViewSet(viewsets.ModelViewSet):
 class StockReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Stock.objects.all()
     serializer_class = StockReadSerializer
+
+
+
+
+class StockStateView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+
+        today = timezone.now().date()
+
+        total_in_stock = Stock.objects.filter(status__status_name="Em estoque").count()
+        total_active = Stock.objects.filter(status__status_name="Ativo").count()
+
+        warranty_items = Stock.objects.filter(
+            warranty=today
+        ).count()
+
+
+        data = {
+            "total_stock" : total_in_stock,
+            "total_active": total_active,
+            "total_in_warranty": warranty_items
+        }
+
+
+        return Response(data)
